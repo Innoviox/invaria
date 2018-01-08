@@ -1,5 +1,5 @@
 package api.genetic;
 
-public class Algorithmable {
+public interface Algorithmable {
 
 }
