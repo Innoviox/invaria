@@ -11,7 +11,7 @@ public abstract class Algorizer<T extends Algorithmable, E> {
 	protected int sampleSize;
 	protected double threshhold;
 	protected E target;
-
+	private static final Random r = new Random();
 	public abstract T genElement();
 
 	public void initializeSet() {
@@ -42,7 +42,7 @@ public abstract class Algorizer<T extends Algorithmable, E> {
 
 	public void crossover() {
 		while (specimens.size() < sampleSize) {
-			specimens.add((T) specimens.get(new Random().nextInt(specimens.size())).cross(specimens.get(new Random().nextInt(specimens.size()))));
+			specimens.add((T) specimens.get(r.nextInt(specimens.size())).cross(specimens.get(r.nextInt(specimens.size()))));
 		}
 	}
 
