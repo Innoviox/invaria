@@ -1,8 +1,8 @@
 package api.genetic;
 
 public abstract class Gene<E> {
-    private E[] genotype;
-    private double fitness;
+    protected E[] genotype;
+    protected double fitness;
 
     /**
      * Randomly initialize a Gene of size length
@@ -19,7 +19,10 @@ public abstract class Gene<E> {
 	    for (int i = 0; i < length; i++)
 	        genotype[i] = alphabet[Algorizer.r.nextInt(alphabet.length)];
     }
-
+	
+	public Gene (E[] genotype) {
+		this.genotype = genotype;
+	}
     /**
      * Calculate the fitness of a gene
      * For example:
@@ -31,7 +34,7 @@ public abstract class Gene<E> {
      */
 	public abstract void findFitness(E[] target);
 
-	public abstract Gene cross(Gene a);
+	public abstract Gene<E> cross(Gene<E> a);
 
 	public abstract void mutate();
 

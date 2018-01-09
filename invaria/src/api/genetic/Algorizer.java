@@ -11,9 +11,13 @@ public abstract class Algorizer<T extends Gene, E> {
 	protected int sampleSize;
 	protected double threshhold;
 	protected E[] target;
-	static final Random r = new Random();
+	protected int generation = 0;
+	protected static final Random r = new Random();
+	
 	public abstract T genElement();
-
+	public abstract boolean done();
+	public abstract void setThreshold();
+	
 	public void initializeSet() {
 		boolean safe = false;
 		while (!safe) {
@@ -22,7 +26,7 @@ public abstract class Algorizer<T extends Gene, E> {
 			}
 			calculateFitness();
 			for (T specimen : specimens) {
-				if(specimen.getFitness() != 0){
+				if (specimen.getFitness() != 0){
 					safe = true;
 				}
 			}
@@ -47,7 +51,7 @@ public abstract class Algorizer<T extends Gene, E> {
 	}
 
 	public void mutate(){
-		for(T specimen : specimens){
+		for (T specimen : specimens){
 			specimen.mutate();
 		}
 	}
@@ -83,10 +87,24 @@ public abstract class Algorizer<T extends Gene, E> {
 		for (T specimen : specimens) {
 			specimen.setFitness(specimen.getFitness() / sum);
 		}
-
 	}
+	
 	public List<T> output(){
 		return new ArrayList<T>(specimens);
 	}
-
+	
+	public void tick() {
+		generation++;
+		select();
+		crossover();
+		mutate();
+	}
+	
+	public void main() {
+		initializeSet();
+		while (!done()) {
+			tick();
+			setThreshold();
+		}
+	}
 }
