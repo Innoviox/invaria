@@ -10,7 +10,7 @@ public abstract class Algorizer<T extends Gene, E> {
 	protected List<T> specimens = new ArrayList<>();
 	protected int sampleSize;
 	protected double threshhold;
-	protected E target;
+	protected E[] target;
 	static final Random r = new Random();
 	public abstract T genElement();
 
