@@ -5,13 +5,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Algorizer<T extends Algorithmable, E> {
+public abstract class Algorizer<T extends Gene, E> {
 
 	protected List<T> specimens = new ArrayList<>();
 	protected int sampleSize;
 	protected double threshhold;
 	protected E target;
-	private static final Random r = new Random();
+	static final Random r = new Random();
 	public abstract T genElement();
 
 	public void initializeSet() {
