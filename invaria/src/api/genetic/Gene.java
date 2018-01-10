@@ -1,7 +1,10 @@
 package api.genetic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Gene<E> {
-    protected E[] genotype;
+    protected List<E> genotype;
     protected double fitness;
 
     /**
@@ -15,14 +18,15 @@ public abstract class Gene<E> {
      * @param length size of the array
      */
 	public Gene (E[] alphabet, int length) {
-	    genotype = (E[]) new Object[length];
+	    genotype = new ArrayList<E>();
 	    for (int i = 0; i < length; i++)
-	        genotype[i] = alphabet[Algorizer.r.nextInt(alphabet.length)];
+	        genotype.add(alphabet[Algorizer.r.nextInt(alphabet.length)]);
     }
 	
-	public Gene (E[] genotype) {
+	public Gene (List<E> genotype) {
 		this.genotype = genotype;
 	}
+
     /**
      * Calculate the fitness of a gene
      * For example:
@@ -32,7 +36,7 @@ public abstract class Gene<E> {
      * the fitness of this Gene to the found fitness.
      * @param target the target to check to, in this case "apple".
      */
-	public abstract void findFitness(E[] target);
+	public abstract void findFitness(List<E> target);
 
 	public abstract Gene<E> cross(Gene<E> a);
 
@@ -47,11 +51,13 @@ public abstract class Gene<E> {
         fitness = d;
     }
 
-	public E[] getGenotype() {
+	public List<E> getGenotype() {
 	    return genotype;
     }
 
-    public void setGenotype(E[] genotype) {
+    public void setGenotype(List<E> genotype) {
         this.genotype = genotype;
     }
+
+    public E get(int i) { return genotype.get(i); }
 }

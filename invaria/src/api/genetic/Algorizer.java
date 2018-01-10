@@ -10,27 +10,32 @@ public abstract class Algorizer<T extends Gene, E> {
 	protected List<T> specimens = new ArrayList<>();
 	protected int sampleSize;
 	protected double threshhold;
-	protected E[] target;
+	protected List<E> target;
 	protected int generation = 0;
 	protected static final Random r = new Random();
 	
 	public abstract T genElement();
 	public abstract boolean done();
 	public abstract void setThreshold();
-	
+	public abstract void display();
+
 	public void initializeSet() {
 		boolean safe = false;
 		while (!safe) {
+		    specimens.clear();
 			while (specimens.size() < sampleSize) {
 				specimens.add(genElement());
 			}
 			calculateFitness();
+
 			for (T specimen : specimens) {
-				if (specimen.getFitness() != 0){
-					safe = true;
-				}
-			}
-		}
+                //System.out.println(specimen);
+                if (specimen.getFitness() != 0) {
+                    safe = true;
+                }
+            }
+            //System.out.println("Unsafe initialization; retrying");
+        }
 
 	}
 
@@ -105,6 +110,39 @@ public abstract class Algorizer<T extends Gene, E> {
 		while (!done()) {
 			tick();
 			setThreshold();
+			display();
 		}
 	}
+
+	public T worst() {
+        double min = Double.MAX_VALUE;
+        T worst = null;
+        for (T t: specimens) {
+            double f = t.getFitness();
+            if (f < min) {
+                min = f;
+                worst = t;
+            }
+        }
+        return worst;
+    }
+
+    public T best() {
+        double max = Double.MIN_VALUE;
+        T best = null;
+        for (T t: specimens) {
+            double f = t.getFitness();
+            if (f < max) {
+                max = f;
+                best = t;
+            }
+        }
+        return best;
+    }
+
+    public double averageFitness() {
+	    double f = 0;
+	    for (T t: specimens) f += t.getFitness();
+	    return f / specimens.size();
+    }
 }

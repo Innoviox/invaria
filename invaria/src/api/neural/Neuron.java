@@ -12,7 +12,7 @@ public abstract class Neuron {
     /**
      * No default instantiation for you!
      */
-    Neuron () { }
+    Neuron ( ) { }
 
     /**
      * Basic neuron constructor
