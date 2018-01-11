@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import api.genetic.*;
 
-public class GeneticStrings extends Algorizer<StringGene, Character> {
+public class GeneticStrings extends Algorizer<Character> {
 	private int maxGenerations;
 	
 	public GeneticStrings() {
@@ -31,7 +31,7 @@ public class GeneticStrings extends Algorizer<StringGene, Character> {
 	@Override
 	public boolean done() {
 		if (generation > maxGenerations) return true;
-		for (StringGene sg: specimens) if (sg.getFitness() == 1) return true;
+		for (Gene<Character> sg: specimens) if (sg.getFitness() == 1) return true;
 		return false;
 	}
 
@@ -42,7 +42,7 @@ public class GeneticStrings extends Algorizer<StringGene, Character> {
 
 	@Override
 	public void display() {
-		StringGene best = best();
+		Gene<Character> best = best();
 		System.out.println("Best: " + best.toString());
 	}
 

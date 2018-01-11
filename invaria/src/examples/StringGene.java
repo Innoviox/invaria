@@ -7,9 +7,9 @@ import java.util.Random;
 import api.genetic.Gene;
 
 public class StringGene extends Gene<Character> {
-	public static Character[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .,".chars().mapToObj(c -> (char)c).toArray(Character[]::new);
+	public static Character[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ .,!?".chars().mapToObj(c -> (char)c).toArray(Character[]::new);
 	private static final Random r = new Random();
-	private static final double mutation = 0.01;
+	private static final double mutation = 0.001;
 	
 	public StringGene(int length) {
 		super(alphabet, length);

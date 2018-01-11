@@ -5,16 +5,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Algorizer<T extends Gene, E> {
+public abstract class Algorizer<E> {
 
-	protected List<T> specimens = new ArrayList<>();
+	protected List<Gene<E>> specimens = new ArrayList<>();
 	protected int sampleSize;
 	protected double threshhold;
 	protected List<E> target;
 	protected int generation = 0;
 	protected static final Random r = new Random();
 	
-	public abstract T genElement();
+	public abstract Gene<E> genElement();
 	public abstract boolean done();
 	public abstract void setThreshold();
 	public abstract void display();
@@ -28,7 +28,7 @@ public abstract class Algorizer<T extends Gene, E> {
 			}
 			calculateFitness();
 
-			for (T specimen : specimens) {
+			for (Gene<E> specimen : specimens) {
                 //System.out.println(specimen);
                 if (specimen.getFitness() != 0) {
                     safe = true;
@@ -41,9 +41,9 @@ public abstract class Algorizer<T extends Gene, E> {
 
 	public void select() {
 		calculateFitness();
-		Iterator<T> i = specimens.iterator();
+		Iterator<Gene<E>> i = specimens.iterator();
 		while (i.hasNext()) {
-			T temp = i.next();
+			Gene<E> temp = i.next();
 			if (temp.getFitness() < threshhold)
 				i.remove();
 		}
@@ -51,37 +51,37 @@ public abstract class Algorizer<T extends Gene, E> {
 
 	public void crossover() {
 		while (specimens.size() < sampleSize) {
-			specimens.add((T) specimens.get(r.nextInt(specimens.size())).cross(specimens.get(r.nextInt(specimens.size()))));
+			specimens.add((Gene<E>) specimens.get(r.nextInt(specimens.size())).cross(specimens.get(r.nextInt(specimens.size()))));
 		}
 	}
 
 	public void mutate(){
-		for (T specimen : specimens){
+		for (Gene<E> specimen : specimens){
 			specimen.mutate();
 		}
 	}
 	
 	
 	private void calculateFitness() {
-		for (T specimen : specimens) {
+		for (Gene<E> specimen : specimens) {
 			specimen.findFitness(target);
 		}
 		normalize(specimens);
 		double sum = 0;
-		for (T specimen : specimens) {
+		for (Gene<E> specimen : specimens) {
 			double tempFitness = specimen.getFitness();
 			specimen.setFitness(specimen.getFitness() + sum);
 			sum += tempFitness;
 		}
 	}
 
-	private void normalize(List<T> spec) {
+	private void normalize(List<Gene<E>> spec) {
 		double sum = 0;
 
 		// may need to swap a and b
 		spec.sort((b, a) -> Double.compare(b.getFitness(), a.getFitness()));
 
-		for (T specimen : specimens) {
+		for (Gene<E> specimen : specimens) {
 			sum += specimen.getFitness();
 		}
 
@@ -89,13 +89,13 @@ public abstract class Algorizer<T extends Gene, E> {
 			return;
 		}
 		
-		for (T specimen : specimens) {
+		for (Gene<E> specimen : specimens) {
 			specimen.setFitness(specimen.getFitness() / sum);
 		}
 	}
 	
-	public List<T> output(){
-		return new ArrayList<T>(specimens);
+	public List<Gene<E>> output(){
+		return new ArrayList<Gene<E>>(specimens);
 	}
 	
 	public void tick() {
@@ -114,10 +114,10 @@ public abstract class Algorizer<T extends Gene, E> {
 		}
 	}
 
-	public T worst() {
+	public Gene<E> worst() {
         double min = Double.MAX_VALUE;
-        T worst = null;
-        for (T t: specimens) {
+        Gene<E> worst = null;
+        for (Gene<E> t: specimens) {
             double f = t.getFitness();
             if (f < min) {
                 min = f;
@@ -127,10 +127,10 @@ public abstract class Algorizer<T extends Gene, E> {
         return worst;
     }
 
-    public T best() {
+    public Gene<E> best() {
         double max = Double.MIN_VALUE;
-        T best = null;
-        for (T t: specimens) {
+        Gene<E> best = null;
+        for (Gene<E> t: specimens) {
             double f = t.getFitness();
             if (f < max) {
                 max = f;
@@ -142,7 +142,7 @@ public abstract class Algorizer<T extends Gene, E> {
 
     public double averageFitness() {
 	    double f = 0;
-	    for (T t: specimens) f += t.getFitness();
+	    for (Gene<E> t: specimens) f += t.getFitness();
 	    return f / specimens.size();
     }
 }
